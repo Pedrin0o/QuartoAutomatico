@@ -1,0 +1,60 @@
+package com.example.quarto;
+
+import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
+import android.widget.RadioButton;
+import android.widget.Toast;
+
+import androidx.activity.EdgeToEdge;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.graphics.Insets;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
+
+public class MainActivity extends AppCompatActivity {
+    private RadioButton radioButton1;
+    private RadioButton radioButton2;
+    private RadioButton radioButton3;
+    private RadioButton radioButton4;
+    private RadioButton radioButton5; // Novo botão para "Trancada"
+    private Button buttonVerificar;
+    private String estadoPorta = "Fechada";
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        EdgeToEdge.enable(this);
+        setContentView(R.layout.activity_main);
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
+            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
+            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
+            return insets;
+        });
+
+        radioButton1 = findViewById(R.id.radioButton1);
+        radioButton2 = findViewById(R.id.radioButton2);
+        radioButton3 = findViewById(R.id.radioButton3);
+        radioButton4 = findViewById(R.id.radioButton4);
+        radioButton5 = findViewById(R.id.radioButton5); // Adicionando o botão Trancada
+        buttonVerificar = findViewById(R.id.buttonVerificar);
+
+        buttonVerificar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String lampadaStatus = radioButton1.isChecked() ? "acesa" : "apagada";
+
+                // Atualiza estado da porta baseado nos RadioButtons
+                if (radioButton3.isChecked()) {
+                    estadoPorta = "Aberta";
+                } else if (radioButton4.isChecked()) {
+                    estadoPorta = "Fechada";
+                } else if (radioButton5.isChecked()) {
+                    estadoPorta = "Trancada";
+                }
+
+                Toast.makeText(MainActivity.this, "Lâmpada: " + lampadaStatus + " | Porta: " + estadoPorta, Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+}
